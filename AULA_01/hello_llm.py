@@ -2,22 +2,21 @@ import os
 from dotenv import load_dotenv
 from openai import OpenAI
 
-# Carrega as variáveis de ambiente do arquivo .env
+# Carrega as variáveis do arquivo .env
 load_dotenv()
 
 client = OpenAI(
-    api_key=os.getenv("OPENAI_API_KEY")
+    api_key=os.getenv("GROQ_API_KEY"),
+    base_url="https://api.groq.com/openai/v1"
 )
 
-# Usa o modelo definido no .env ou um valor padrão
-modelo = os.getenv("OPENAI_MODEL", "gpt-5.4-mini")
+modelo = os.getenv("GROQ_MODEL", "llama-3.1-8b-instant")
 
 response = client.chat.completions.create(
     model=modelo,
     messages=[
         {"role": "user", "content": "Qual a capital do Brasil?"}
     ],
-    store=True,
 )
 
 print(response.choices[0].message.content)
