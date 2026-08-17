@@ -269,8 +269,6 @@ Se tivesse que escolher só um pra construir: o Cenário 1. Não porque seja mai
 
 # Como usei IA nesta atividade
 
-# Como usei IA nesta atividade
-
 Durante esta atividade, usei a IA principalmente como uma ferramenta de apoio para organizar minhas ideias, levantar possibilidades e revisar algumas decisões técnicas. Não usei a IA simplesmente para gerar uma resposta pronta e copiar, porque eu precisava entender por que cada escolha fazia sentido dentro de cada cenário.
 
 Uma das partes em que a IA me ajudou foi na exploração das possibilidades de arquitetura. Como os dois cenários eram bem diferentes - um sistema de suporte de TI e uma aplicação para consulta de contratos de locação - usei a IA para discutir alternativas de uso de RAG, busca por palavras-chave, banco de dados, APIs e busca semântica. Isso me ajudou a perceber que RAG não deve ser usado para tudo. Por exemplo, para saber "quantos chamados aconteceram" ou "qual é o status atual" de alguma informação, faz mais sentido consultar diretamente uma API ou banco de dados do que tentar recuperar essa informação por meio de documentos.
