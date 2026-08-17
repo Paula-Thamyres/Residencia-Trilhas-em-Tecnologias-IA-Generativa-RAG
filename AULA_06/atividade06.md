@@ -186,6 +186,7 @@ Considerei o `text-embedding-3-large` da OpenAI pelo desempenho, mas descartei p
 
 ### Cenário 1
 
+```mermaid
 %%{init: {
   "theme": "base",
   "themeVariables": {
@@ -235,9 +236,11 @@ flowchart TD
     class H,I,J,K,L,M ingest;
 
     style ING fill:#F0E4F2,stroke:#CBA5D3,stroke-width:1px,color:#59435F;
+```
 
 ### Cenário 2
 
+```mermaid
 %%{init: {
   "theme": "base",
   "themeVariables": {
@@ -298,8 +301,9 @@ flowchart TD
     class K,M,N,O,P,Q ingest;
 
     style ING fill:#F0E4F2,stroke:#CBA5D3,stroke-width:1px,color:#59435F;
+```
 
-### Tabela de decisões
+# Tabela de decisões
 
 | Etapa           | Cenário 1                           | Cenário 2                                 |
 | --------------- | ----------------------------------- | ----------------------------------------- |
