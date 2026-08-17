@@ -186,47 +186,118 @@ Considerei o `text-embedding-3-large` da OpenAI pelo desempenho, mas descartei p
 
 ### Cenário 1
 
-```mermaid
-flowchart TD
-    A[Atendente pergunta no chat do Freshdesk] --> B{Classificador de intenção}
-    B -->|Procedimento/política| C[Busca vetorial filtrada por category/document_type]
-    B -->|Status/contagem| D[Consulta API Freshdesk / IAM Corp]
-    C --> E[Top-k chunks]
-    E --> F[LLM monta resposta com citação]
-    D --> F
-    F --> G[Resposta ao atendente + aviso de criticidade se aplicável]
+%%{init: {
+  "theme": "base",
+  "themeVariables": {
+    "background": "#F8F0F8",
+    "primaryTextColor": "#332936",
+    "lineColor": "#B889C5",
+    "fontFamily": "Arial",
+    "fontSize": "9px",
+    "clusterBkg": "#F2E5F4",
+    "clusterBorder": "#CDA8D5"
+  },
+  "flowchart": {
+    "nodeSpacing": 8,
+    "rankSpacing": 12,
+    "curve": "basis",
+    "padding": 3
+  }
+}}%%
 
-    subgraph Ingestão
+flowchart TD
+
+    A[Atendente pergunta no chat] --> B{Classificador de intenção}
+    B -->|Procedimento / política| C[Busca vetorial filtrada<br/>category / document_type]
+    B -->|Status / contagem| D[Consulta API<br/>Freshdesk / IAM Corp]
+    C --> E[Top-k chunks]
+    E --> F[LLM monta resposta<br/>com citação]
+    D --> F
+    F --> G[Resposta ao atendente<br/>+ aviso de criticidade]
+
+    subgraph ING["Ingestão"]
+        direction LR
         H[Documentos] --> I[Extração] --> J[Limpeza] --> K[Metadados] --> L[Chunking por seção] --> M[Embedding 3-small] --> N[(Banco vetorial)]
     end
+
     N --> C
-```
+
+    classDef fluxo fill:#FCE4EF,stroke:#CF78A4,color:#332936,stroke-width:1px;
+    classDef ia fill:#EDE1F3,stroke:#9C70B3,color:#33263A,stroke-width:1px;
+    classDef decisao fill:#F1E5F4,stroke:#B77BC4,color:#33263A,stroke-width:1px;
+    classDef banco fill:#E3D5EC,stroke:#8F64A8,color:#302238,stroke-width:1px;
+    classDef ingest fill:#F7EAF3,stroke:#C58CAA,color:#382A34,stroke-width:1px;
+
+    class A,C,D,E,G fluxo;
+    class F ia;
+    class B decisao;
+    class N banco;
+    class H,I,J,K,L,M ingest;
+
+    style ING fill:#F0E4F2,stroke:#CBA5D3,stroke-width:1px,color:#59435F;
 
 ### Cenário 2
 
-```mermaid
+%%{init: {
+  "theme": "base",
+  "themeVariables": {
+    "background": "#F8F0F8",
+    "primaryTextColor": "#332936",
+    "lineColor": "#B889C5",
+    "fontFamily": "Arial",
+    "fontSize": "9px",
+    "clusterBkg": "#F2E5F4",
+    "clusterBorder": "#CDA8D5"
+  },
+  "flowchart": {
+    "nodeSpacing": 8,
+    "rankSpacing": 12,
+    "curve": "basis",
+    "padding": 3
+  }
+}}%%
+
 flowchart TD
-    A[Corretor busca imóvel/locatário] --> B[Busca exata por metadado + status=ativo]
+
+    A[Corretor busca imóvel / locatário] --> B[Busca exata por metadado<br/>+ status = ativo]
     B --> C[Contrato identificado]
     C --> D[Pergunta sobre esse contrato]
-    D --> E[Busca vetorial restrita ao document_id]
-    E --> F[Chunks da cláusula + aditivos vinculados]
-    F --> G[LLM monta resposta citando cláusula e página]
+    D --> E[Busca vetorial restrita<br/>ao document_id]
+    E --> F[Chunks da cláusula<br/>+ aditivos vinculados]
+    F --> G[LLM monta resposta<br/>citando cláusula + página]
     G --> H{Envolve cálculo financeiro?}
-    H -->|Sim| I[API de índice oficial IGP-M/IPCA]
+    H -->|Sim| I[API de índice oficial<br/>IGP-M / IPCA]
     H -->|Não| J[Resposta final]
     I --> J
 
-    subgraph Ingestão
+    subgraph ING["Ingestão"]
+        direction LR
         K[PDFs] --> L{Tem texto nativo?}
         L -->|Sim| M[Extração de texto]
         L -->|Não| N[OCR + confiança]
         M --> O[Limpeza cosmética]
         N --> O
-        O --> P[Metadados via ERP] --> Q[Chunking por cláusula] --> R[bge-m3 local] --> S[(Banco vetorial local)]
+        O --> P[Metadados via ERP]
+        P --> Q[Chunking por cláusula]
+        Q --> R[bge-m3 local]
+        R --> S[(Banco vetorial local)]
     end
+
     S --> E
-```
+
+    classDef fluxo fill:#FCE4EF,stroke:#CF78A4,color:#332936,stroke-width:1px;
+    classDef ia fill:#EDE1F3,stroke:#9C70B3,color:#33263A,stroke-width:1px;
+    classDef decisao fill:#F1E5F4,stroke:#B77BC4,color:#33263A,stroke-width:1px;
+    classDef banco fill:#E3D5EC,stroke:#8F64A8,color:#302238,stroke-width:1px;
+    classDef ingest fill:#F7EAF3,stroke:#C58CAA,color:#382A34,stroke-width:1px;
+
+    class A,B,C,D,E,F,I,J fluxo;
+    class G,R ia;
+    class H,L decisao;
+    class S banco;
+    class K,M,N,O,P,Q ingest;
+
+    style ING fill:#F0E4F2,stroke:#CBA5D3,stroke-width:1px,color:#59435F;
 
 ### Tabela de decisões
 
